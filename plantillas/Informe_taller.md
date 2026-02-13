@@ -6,7 +6,7 @@ _Taller 1 - Modelado de Proceso del Cliente con BPMN_
 ## 👥 Integrantes del equipo
 - Deivid Nicolas Urrea Lara (GitHub: DNico21)
 - Samuel Acero García (GitHub: Iron200044)
-- [Nombre compañero 2]
+- Andrés Felipe Azcona (GitHub: andresazcona)
 
 ## 🧠 Descripción general del trabajo
 El objetivo del taller fue modelar un proceso de negocio real utilizando la notación BPMN 2.0, identificando eventos, actividades, decisiones, actores involucrados y puntos críticos del flujo. 
