@@ -9,93 +9,137 @@ _Taller 1 - Modelado de Proceso del Cliente con BPMN_
 - Andrés Felipe Azcona (GitHub: andresazcona)
 
 ## 🧠 Descripción general del trabajo
-El objetivo del taller fue modelar un proceso de negocio real utilizando la notación BPMN 2.0, identificando eventos, actividades, decisiones, actores involucrados y puntos críticos del flujo. 
 
-En la primera parte se trabajó el caso base de la Clínica Salud Viva, modelando el proceso de agendamiento de citas médicas. Posteriormente, se aplicó la metodología al cliente real asignado: Cemedica IPS y Salud Ocupacional.
+El objetivo del taller fue modelar un proceso de negocio real utilizando la notación BPMN 2.0, identificando eventos, actividades, decisiones, actores involucrados y puntos críticos del flujo.
 
-El proceso seleccionado fue la generación, validación y envío de los archivos RIPS en formato JSON al sistema SISPRO, de acuerdo con las Resoluciones 2275 de 2023 y 558 de 2024. Este proceso es crítico para el cumplimiento normativo ante el Ministerio de Salud y la DIAN.
+En la primera parte se trabajó el caso base de la Clínica Salud Viva, modelando el proceso de agendamiento de citas médicas con separación por swimlanes y uso correcto de gateways exclusivos y paralelos.
+
+Posteriormente, se aplicó la metodología al cliente real encontrado: **Cemedica IPS y Salud Ocupacional**, modelando el proceso de generación, validación y envío de los archivos RIPS en formato JSON al sistema SISPRO, conforme a lo establecido en las Resoluciones 2275 de 2023 y 558 de 2024.
+
+Este proceso es fundamental para el cumplimiento normativo ante el Ministerio de Salud y la DIAN, ya que los RIPS constituyen el mecanismo oficial de reporte de prestación de servicios de salud.
+
+---
 
 ## 🔧 Proceso de desarrollo
-Para el desarrollo del taller se siguieron los siguientes pasos:
 
-1. Análisis del problema real del cliente, identificando la necesidad de generar archivos RIPS en formato JSON desde un sistema legacy (EGMH) sin mantenimiento.
-2. Definición del alcance del proceso a modelar, enfocándolo específicamente en la generación y envío de RIPS a SISPRO.
-3. Identificación de actores clave:
+El desarrollo del modelo se realizó en las siguientes etapas:
+
+1. Análisis del contexto del cliente, identificando la problemática principal: el sistema legacy (EGMH) no genera automáticamente los RIPS en formato JSON.
+2. Definición del alcance del proceso a modelar, enfocándolo exclusivamente en la generación y envío del RIPS a SISPRO.
+3. Identificación de actores principales del proceso:
    - Profesional de Salud
-   - Sistema Legacy EGMH
-   - Módulo Generador RIPS
+   - Sistema EGMH (Legacy)
    - Área Administrativa
    - Plataforma SISPRO
-4. Diseño preliminar del flujo en borrador.
-5. Modelado digital utilizando herramienta BPMN (Lucidchart / draw.io).
-6. Ajuste del diagrama aplicando buenas prácticas BPMN 2.0 (uso correcto de gateways exclusivos, separación en pools y lanes, eventos de mensaje y eventos de error).
+4. Construcción manual del flujo en herramienta digital (draw.io), respetando la estructura trabajada en clase.
+5. Incorporación de buenas prácticas BPMN:
+   - Flujo de izquierda a derecha.
+   - Uso de un único evento de inicio.
+   - Uso de gateways exclusivos (XOR) para decisiones.
+   - Separación clara de responsabilidades mediante swimlanes.
+   - Uso de eventos de mensaje para interacción entre organizaciones.
 
-Se priorizó modelar primero los eventos de inicio y fin, luego las actividades principales, y finalmente las decisiones y validaciones externas.
+Se priorizó representar el proceso desde la perspectiva del negocio y no desde un enfoque técnico de implementación.
+
+---
 
 ## 🧩 Análisis del modelo propuesto
 
 ### Estructura del modelo
-El modelo se estructuró en dos pools principales:
-- Pool 1: Cemedica IPS
-- Pool 2: Plataforma SISPRO
 
-Dentro del pool de Cemedica se definieron lanes para separar responsabilidades entre el profesional de salud, el sistema legacy y el módulo generador de RIPS.
+El modelo se estructuró en un único proceso con cuatro swimlanes:
 
-El flujo inicia con la prestación del servicio médico y finaliza cuando el archivo RIPS JSON es aceptado por SISPRO.
+- Profesional de Salud  
+- Sistema EGMH (Legacy)  
+- Área Administrativa  
+- Plataforma SISPRO  
 
-Se incluyen:
-- Eventos de inicio y fin
-- Gateways exclusivos (XOR) para validación de datos y respuesta de SISPRO
-- Eventos intermedios de mensaje para la comunicación entre sistemas
-- Evento de error en caso de rechazo del archivo
+El flujo inicia con la atención médica realizada y culmina con la aceptación del RIPS por parte de SISPRO.
+
+El modelo incluye:
+
+- Evento de inicio.
+- Evento de fin.
+- Dos gateways exclusivos:
+  - ¿Información completa?
+  - ¿Archivo aceptado?
+- Ciclo de retroalimentación en caso de rechazo.
+- Comunicación entre la IPS y SISPRO mediante flujo de mensaje.
+
+---
 
 ### Representación de las necesidades del cliente
-El modelo refleja la problemática real de Cemedica:
-- Sistema legacy sin soporte
-- Necesidad de extracción y transformación de datos
-- Validación normativa obligatoria
-- Interacción con plataforma gubernamental externa
 
-Se evidencia la necesidad de un módulo intermedio que transforme la información clínica en formato JSON conforme a la normativa vigente.
+El modelo refleja de manera clara la problemática real de Cemedica IPS:
+
+- Dependencia de un sistema legacy sin mantenimiento.
+- Necesidad de validar la integridad de los datos antes de generar el RIPS.
+- Envío obligatorio de información a una plataforma gubernamental externa.
+- Gestión de errores y reprocesamiento en caso de rechazo del archivo.
+
+El ciclo de retroalimentación modelado permite evidenciar que el proceso no termina ante un rechazo, sino que incorpora análisis y ajuste de datos antes de un nuevo envío, lo cual representa una práctica realista de control y cumplimiento.
+
+---
 
 ### Supuestos tomados
-- Se asume que el sistema legacy almacena correctamente la información clínica.
-- Se asume que la validación en SISPRO es automática.
-- Se modela un flujo ideal sin interrupciones manuales adicionales.
-- No se modelan aspectos técnicos internos de programación, solo el proceso de negocio.
+
+Para efectos del modelado se asumió que:
+
+- El sistema EGMH almacena correctamente la información clínica.
+- La validación realizada por SISPRO es automática.
+- El proceso puede repetirse hasta que el archivo sea aceptado.
+- No se modelaron detalles técnicos internos (estructura JSON, validaciones de esquema, APIs), ya que el enfoque es de proceso de negocio.
+
+---
 
 ## 📈 Diagrama final entregado
-> Ver archivo: entrega/modelo-final.drawio  
-> Proceso: "Generación y Envío de RIPS JSON a SISPRO – Cemedica IPS"
+
+> Archivo: `entrega/modelo-final.drawio`  
+> Proceso: **Proceso de Generación y Envío de RIPS JSON – Cemedica IPS**
+
+El diagrama fue desarrollado manualmente respetando la notación BPMN 2.0 y siguiendo el estilo trabajado en clase.
+
+---
 
 ## 📋 Tabla de actores, entidades o componentes
 
 | Nombre del elemento | Tipo | Descripción | Responsable |
 |---------------------|------|-------------|-------------|
 | Profesional de Salud | Actor | Registra la atención médica en el sistema | IPS |
-| Sistema Legacy EGMH | Sistema | Sistema de historias clínicas desarrollado en 2008 | IPS |
-| Módulo Generador RIPS | Componente | Extrae, valida y transforma datos a JSON | IPS |
-| Área Administrativa | Actor | Supervisa cumplimiento normativo | IPS |
+| Sistema EGMH (Legacy) | Sistema | Sistema de historias clínicas donde se almacena la información | IPS |
+| Área Administrativa | Actor | Analiza errores y ajusta datos en caso de rechazo | IPS |
 | Plataforma SISPRO | Sistema Externo | Valida y recibe archivos RIPS JSON | Ministerio de Salud |
+
+---
 
 ## 🔍 Investigación complementaria
 
 ### Tema investigado:
-Buenas prácticas en modelado BPMN 2.0 y modelado de procesos regulados.
+Buenas prácticas en modelado BPMN 2.0 aplicadas a procesos regulados.
 
 ### Resumen:
-BPMN 2.0 es un estándar definido por la Object Management Group (OMG) para modelar procesos de negocio de manera formal y comprensible tanto para perfiles técnicos como de negocio. Entre sus buenas prácticas se encuentran: utilizar un solo evento de inicio, mantener claridad visual, evitar cruces innecesarios de flujo, utilizar gateways exclusivos para decisiones binarias y separar claramente organizaciones externas mediante pools.
 
-En procesos regulados como el envío de información a plataformas gubernamentales, es recomendable modelar explícitamente los eventos de mensaje y los eventos de error, ya que representan puntos críticos del proceso. Esto permite identificar riesgos, dependencias externas y posibles cuellos de botella.
+BPMN 2.0, definido por la Object Management Group (OMG), es un estándar internacional para la representación gráfica de procesos de negocio. Su objetivo es permitir que tanto perfiles técnicos como no técnicos comprendan el flujo de un proceso de manera clara y estructurada.
 
-La aplicación de estas buenas prácticas permitió construir un modelo claro, estructurado y alineado con estándares internacionales.
+Entre las buenas prácticas aplicadas en este modelo se destacan:
+
+- Uso de un único evento de inicio.
+- Uso de gateways exclusivos para decisiones binarias.
+- Separación de responsabilidades mediante swimlanes.
+- Representación explícita de interacción entre organizaciones mediante mensajes.
+- Evitar sobrecarga visual innecesaria.
+
+En procesos regulados como el envío de RIPS, es fundamental modelar claramente los puntos de validación y los ciclos de retroalimentación, ya que representan riesgos operativos y dependencias externas.
+
+---
 
 ## 📚 Referencias
-- [1] Ministerio de Salud y Protección Social. Resolución 2275 de 2023.
-- [2] Ministerio de Salud y Protección Social. Resolución 558 de 2024.
-- [3] SISPRO. Micrositio FEV-RIPS. https://www.sispro.gov.co/Pages/Home.aspx
-- [4] Object Management Group (OMG). BPMN 2.0 Specification. https://www.omg.org/spec/BPMN/
+
+- Ministerio de Salud y Protección Social. Resolución 2275 de 2023.
+- Ministerio de Salud y Protección Social. Resolución 558 de 2024.
+- Sistema Integral de Información de la Protección Social (SISPRO). Micrositio FEV-RIPS. https://www.sispro.gov.co/Pages/Home.aspx
 
 ---
 
 _Este documento hace parte de la entrega del Taller 1 del curso Arquitectura Empresarial - Universidad de La Sabana._
+
