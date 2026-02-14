@@ -25,13 +25,4 @@ _Taller 1 - Modelado de Proceso del Cliente con BPMN_
 
 ---
 
-## 📌 Recomendaciones
-
-- Se utilizó el estándar oficial BPMN 2.0 definido por la Object Management Group (OMG) como base técnica del modelado.
-- Las resoluciones citadas corresponden a la normativa vigente que regula la generación y reporte del RIPS en formato JSON en Colombia.
-- Se priorizaron fuentes oficiales e institucionales para asegurar validez académica.
-- Se declaró explícitamente el uso de herramientas de inteligencia artificial como apoyo metodológico.
-
----
-
 _Este archivo forma parte de la entrega académica del curso AREM - Arquitectura Empresarial - Universidad de La Sabana._
